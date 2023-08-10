@@ -45,11 +45,27 @@ public class EnemyController : MonoBehaviour
         }
     }
 
+    private void TakeDamage(float dmg)
+    {
+        health-= dmg;
+        if (health == 0) Die();
+    }
+
+    private void Die()
+    {
+        gameObject.SetActive(false);
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.name==player.name)
         {
             attacking = true;
+        }
+        else if (collision.tag.Equals("Bullet"))
+        {
+            TakeDamage(collision.gameObject.transform.GetComponent<bulletController>().damage);
+            collision.gameObject.SetActive(false);
         }
     }
 

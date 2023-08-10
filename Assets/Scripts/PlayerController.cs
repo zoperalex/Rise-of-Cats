@@ -12,20 +12,36 @@ public class PlayerController : MonoBehaviour
     public float health = 100;
     public float attack = 1;
     public float attackSpeed = 1;
+    public float attackSpeedCD = 0;
     public AttackType attackType = AttackType.NONE;
 
     public GameObject projectiles;
     private int projectileCounter = 0;
     public float projectileSpeed = 10f;
 
+    private bool attackReady;
+
     void Start()
     {
-        Attack();
 
     }
 
     void Update()
     {
+        if (attackReady)
+        {
+            Attack();
+            attackReady = false;
+        }
+        if (!attackReady)
+        {
+            attackSpeedCD += Time.deltaTime;
+            if (attackSpeedCD > attackSpeed)
+            {
+                attackReady = true;
+                attackSpeedCD = 0;
+            }
+        }
     }
 
     public void FixedUpdate()
@@ -40,14 +56,30 @@ public class PlayerController : MonoBehaviour
         Vector3 target = new Vector3(float.MaxValue, float.MaxValue, 0);
         for (int i=0; i<enemies.transform.childCount;i++)
         {
+            if (!enemies.transform.GetChild(i).gameObject.activeInHierarchy)
+            {
+                continue;
+            }
             if (Vector3.Distance(transform.position, enemies.transform.GetChild(i).transform.position)< Vector3.Distance(transform.position, target))
             {
                 target = enemies.transform.GetChild(i).transform.position;
             }
         }
+
+        if(target.Equals(new Vector3(float.MaxValue, float.MaxValue, 0)))
+        {
+            return;
+        }
+
         GameObject projectile = projectiles.transform.GetChild(projectileCounter).gameObject;
-        projectile.transform.rotation = new Quaternion(0, 0, Vector3.Angle(transform.position, target), 1);
+        projectile.GetComponent<bulletController>().target = target;
 
         projectile.SetActive(true);
+
+        projectileCounter++;
+        if (projectileCounter >= projectiles.transform.childCount)
+        {
+            projectileCounter = 0;
+        }
     }
 }
