@@ -10,14 +10,17 @@ public class bulletController : MonoBehaviour
     public GameObject player;
     public float damage = 1f;
 
-    void OnEnable()
-    {
-        transform.position = player.transform.position;
-    }
-
     // Update is called once per frame
     void Update()
     {
-        transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
+        transform.position += target * speed * Time.deltaTime;
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.tag.Equals("ProjectileDespawn"))
+        {
+            gameObject.SetActive(false);
+        }
     }
 }

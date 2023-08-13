@@ -12,7 +12,6 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
         else
         {
             instance = this;

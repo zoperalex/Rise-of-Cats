@@ -81,7 +81,7 @@ public class PlayerController : MonoBehaviour
         attackCounter = attackCounter+1 >= pool.childCount? 0 : attackCounter+1;
 
         attack.transform.position = transform.position;
-        attack.GetComponent<bulletController>().target = target;
+        attack.GetComponent<bulletController>().target = (target-transform.position).normalized;
         attack.SetActive(true);
     }
 }
