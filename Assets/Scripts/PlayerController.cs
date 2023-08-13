@@ -1,29 +1,30 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using Unity.VisualScripting.Dependencies.Sqlite;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
     public GameObject enemies;
     public Camera mainCamera;
-    public float speed = 3;
     public FloatingJoystick floatingJoystick;
+
+    public float speed = 3;
     public float health = 100;
     public float attack = 1;
     public float attackSpeed = 1;
     public float attackSpeedCD = 0;
     public AttackType attackType = AttackType.NONE;
-
-    public GameObject projectiles;
-    private int projectileCounter = 0;
     public float projectileSpeed = 10f;
+
+    public GameObject attacks;
+    private int attackCounter = 0;
 
     private bool attackReady;
 
     void Start()
     {
-
     }
 
     void Update()
@@ -36,7 +37,7 @@ public class PlayerController : MonoBehaviour
         if (!attackReady)
         {
             attackSpeedCD += Time.deltaTime;
-            if (attackSpeedCD > attackSpeed)
+            if (attackSpeedCD > 1/attackSpeed)
             {
                 attackReady = true;
                 attackSpeedCD = 0;
@@ -71,15 +72,16 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        GameObject projectile = projectiles.transform.GetChild(projectileCounter).gameObject;
-        projectile.GetComponent<bulletController>().target = target;
+        GameObject attack = null;
+        Transform pool;
 
-        projectile.SetActive(true);
+        pool = (attackType == AttackType.NONE || attackType == AttackType.RANGED) ? attacks.transform.GetChild(0) : attacks.transform.GetChild(1);
+        attack = pool.GetChild(attackCounter).gameObject;
 
-        projectileCounter++;
-        if (projectileCounter >= projectiles.transform.childCount)
-        {
-            projectileCounter = 0;
-        }
+        attackCounter = attackCounter+1 >= pool.childCount? 0 : attackCounter+1;
+
+        attack.transform.position = transform.position;
+        attack.GetComponent<bulletController>().target = target;
+        attack.SetActive(true);
     }
 }
