@@ -41,13 +41,13 @@ public class EnemyController : MonoBehaviour
     {
         if (attackType.Equals(AttackType.MELEE))
         {
-            player.health -= attackDamage;
+            player.ChangeHealth(-attackDamage);
         }
     }
 
     private void TakeDamage(float dmg)
     {
-        health-= dmg;
+        health -= dmg;
         if (health == 0) Die();
     }
 
@@ -62,9 +62,9 @@ public class EnemyController : MonoBehaviour
         {
             attacking = true;
         }
-        else if (collision.tag.Equals("Bullet"))
+        else if (collision.tag.Equals("Projectile"))
         {
-            TakeDamage(collision.gameObject.transform.GetComponent<bulletController>().damage);
+            TakeDamage(collision.gameObject.transform.GetComponent<ProjectileController>().damage);
             collision.gameObject.SetActive(false);
         }
     }

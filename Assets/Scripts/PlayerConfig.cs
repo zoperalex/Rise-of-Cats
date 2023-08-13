@@ -5,5 +5,11 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "PlayerConfig", menuName = "Scriptables/PlayerConfig")]
 public class PlayerConfig : ScriptableObject
 {
-
+    public float health;
+    public float speed;
+    public float attackDamage;
+    public float attackSpeed;
+    public AttackType attackType;
+    public float projectileSpeed;
+    public Sprite projectileSprite;
 }

@@ -4,8 +4,9 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Bullet
   - ProjectileDespawn
+  - Projectile
+  - EnemyProjectile
   layers:
   - Default
   - TransparentFX
