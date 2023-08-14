@@ -25,6 +25,7 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
+        GameManager.instance.playerController = this;
         Setup();
     }
 

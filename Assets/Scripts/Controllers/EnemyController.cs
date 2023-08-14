@@ -1,18 +1,46 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
-    float speed = 1.5f;
-    float health = 2;
-    float attackDamage = 1;
-    float attackSpeed = 1f;
-    public PlayerController player;
+    [SerializeField]
+    private PlayerController player;
+
+    float health;
+    float speed;
+    float attackDamage;
+    float attackSpeed;
+    private AttackType attackType;
+    public float projectileSpeed;
+    public Sprite projectileSprite;
+
     private bool attacking = false;
     private bool attackReady = true;
     private float attackSpeedCD = 0;
-    private AttackType attackType=AttackType.MELEE;
+
+    public void Setup(float health, 
+                      float speed, 
+                      float attackDamage, 
+                      float attackSpeed, 
+                      AttackType attackType, 
+                      float projectileSpeed = 0f, 
+                      Sprite projectileSprite = null, 
+                      Sprite sprite = null)
+    {
+        this.health = health;
+        this.speed = speed;
+        this.attackDamage = attackDamage;
+        this.attackSpeed = attackSpeed;
+        if(sprite!=null) gameObject.GetComponent<SpriteRenderer>().sprite = sprite;
+        this.attackType = attackType;
+        if (attackType.Equals(AttackType.RANGED))
+        {
+            this.projectileSpeed = projectileSpeed;
+            this.projectileSprite = projectileSprite;
+        }
+    }
 
     void Update()
     {
@@ -29,7 +57,7 @@ public class EnemyController : MonoBehaviour
         if (!attackReady)
         {
             attackSpeedCD += Time.deltaTime;
-            if(attackSpeedCD > attackSpeed)
+            if(attackSpeedCD > 1/attackSpeed)
             {
                 attackReady = true;
                 attackSpeedCD = 0;
@@ -51,6 +79,7 @@ public class EnemyController : MonoBehaviour
         if (health == 0) Die();
     }
 
+    //Need to add way to get loot and xp.
     private void Die()
     {
         gameObject.SetActive(false);
@@ -66,6 +95,10 @@ public class EnemyController : MonoBehaviour
         {
             TakeDamage(collision.gameObject.transform.GetComponent<ProjectileController>().damage);
             collision.gameObject.SetActive(false);
+        }
+        else if (collision.tag.Equals("Despawner"))
+        {
+            collision.gameObject.GetComponent<DespawnerManager>().RespawnEnemy(gameObject);
         }
     }
 

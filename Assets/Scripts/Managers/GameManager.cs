@@ -4,8 +4,12 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager instance;
-    public PlayerConfig playerConfig;
+    [HideInInspector] public static GameManager instance;
+    [HideInInspector] public PlayerConfig playerConfig;
+    [HideInInspector] public PlayerController playerController;
+    [HideInInspector] public EnemyManager enemyManager;
+
+    public List<EnemyConfig> BasicEnemies;
 
     private void Awake()
     {

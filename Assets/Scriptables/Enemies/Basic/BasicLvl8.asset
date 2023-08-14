@@ -9,13 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6dbe8a6cf2650b24abaffbf2c0be97b2, type: 3}
-  m_Name: PlayerConfig
+  m_Script: {fileID: 11500000, guid: 28dcaf770f12a224492d73b52569ad49, type: 3}
+  m_Name: BasicLvl8
   m_EditorClassIdentifier: 
-  health: 20
-  speed: 3
-  attackDamage: 5
-  attackSpeed: 1
-  attackType: 0
-  projectileSpeed: 10
+  health: 1000
+  speed: 2.4
+  attackDamage: 200
+  attackSpeed: 2
+  attackType: 2
+  projectileSpeed: 0
   projectileSprite: {fileID: 0}
+  sprite: {fileID: 0}
