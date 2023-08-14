@@ -13,13 +13,24 @@ public class LevelManager : MonoBehaviour
     IEnumerator LevelOne()
     {
         yield return new WaitForSeconds(3);
+        GameManager.instance.enemyManager.SpawnWave(5, GameManager.instance.BasicEnemies[0]);
+        yield return new WaitForSeconds(5);
+        GameManager.instance.enemyManager.SpawnWave(10, GameManager.instance.BasicRangedEnemies[0]);
+        yield return new WaitForSeconds(5);
         GameManager.instance.enemyManager.SpawnWave(10, GameManager.instance.BasicEnemies[0]);
-        yield return new WaitForSeconds(27);
+        yield return new WaitForSeconds(5);
+        GameManager.instance.enemyManager.SpawnWave(5, GameManager.instance.BasicEnemies[0]);
+        GameManager.instance.enemyManager.SpawnWave(5, GameManager.instance.BasicRangedEnemies[0]);
+        yield return new WaitForSeconds(15);
         GameManager.instance.enemyManager.SpawnWave(20, GameManager.instance.BasicEnemies[0]);
-        yield return new WaitForSeconds(60);
+        yield return new WaitForSeconds(30);
+        GameManager.instance.enemyManager.SpawnWave(20, GameManager.instance.BasicEnemies[0]);
+        GameManager.instance.enemyManager.SpawnWave(5, GameManager.instance.BasicRangedEnemies[0]);
+        yield return new WaitForSeconds(30);
         GameManager.instance.enemyManager.SpawnWave(40, GameManager.instance.BasicEnemies[0]);
-        yield return new WaitForSeconds(90);
-        GameManager.instance.enemyManager.SpawnWave(10, GameManager.instance.BasicEnemies[1]);
-        yield return null;
+        GameManager.instance.enemyManager.SpawnWave(10, GameManager.instance.BasicRangedEnemies[0]);
+        yield return new WaitForSeconds(60);
+        GameManager.instance.enemyManager.SpawnWave(20, GameManager.instance.BasicEnemies[1]);
+        GameManager.instance.enemyManager.SpawnWave(5, GameManager.instance.BasicRangedEnemies[1]);
     }
 }

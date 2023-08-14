@@ -46,7 +46,6 @@ public class PlayerController : MonoBehaviour
         if (attackReady)
         {
             Attack();
-            attackReady = false;
         }
         if (!attackReady)
         {
@@ -83,6 +82,7 @@ public class PlayerController : MonoBehaviour
 
         if (target.Equals(new Vector3(float.MaxValue, float.MaxValue, 0)))
         {
+            attackReady = true;
             return;
         }
 
@@ -98,6 +98,7 @@ public class PlayerController : MonoBehaviour
         if (attackType == AttackType.NONE || attackType == AttackType.RANGED) attack.GetComponent<ProjectileController>().Setup(projectileSpeed, attackDamage, (target - transform.position).normalized, projectileSprite);
         //else 
         attack.SetActive(true);
+        attackReady = false;
     }
 
     public void ChangeHealth(float amount)

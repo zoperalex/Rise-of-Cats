@@ -12,13 +12,20 @@ public class EnemyController : MonoBehaviour
     float speed;
     float attackDamage;
     float attackSpeed;
-    private AttackType attackType;
-    public float projectileSpeed;
-    public Sprite projectileSprite;
+    AttackType attackType;
+    float projectileSpeed;
+    Sprite projectileSprite;
 
     private bool attacking = false;
     private bool attackReady = true;
     private float attackSpeedCD = 0;
+
+    [SerializeField]
+    private GameObject enemyAttacks;
+    [SerializeField]
+    private CircleCollider2D circleCollider;
+
+    int attackCounter;
 
     public void Setup(float health, 
                       float speed, 
@@ -27,7 +34,8 @@ public class EnemyController : MonoBehaviour
                       AttackType attackType, 
                       float projectileSpeed = 0f, 
                       Sprite projectileSprite = null, 
-                      Sprite sprite = null)
+                      Sprite sprite = null,
+                      float attackRange = 0f)
     {
         this.health = health;
         this.speed = speed;
@@ -35,10 +43,16 @@ public class EnemyController : MonoBehaviour
         this.attackSpeed = attackSpeed;
         if(sprite!=null) gameObject.GetComponent<SpriteRenderer>().sprite = sprite;
         this.attackType = attackType;
-        if (attackType.Equals(AttackType.RANGED))
+        if (attackType.Equals(AttackType.MELEE))
+        {
+            circleCollider.radius = 0.5f;
+        }
+        else
         {
             this.projectileSpeed = projectileSpeed;
             this.projectileSprite = projectileSprite;
+            circleCollider.radius = attackRange;
+            attackCounter = 0;
         }
     }
 
@@ -50,7 +64,6 @@ public class EnemyController : MonoBehaviour
             if(attackReady)
             {
                 Attack();
-                attackReady = false;
             }
         }
 
@@ -71,9 +84,18 @@ public class EnemyController : MonoBehaviour
         {
             player.ChangeHealth(-attackDamage);
         }
+        else
+        {
+            GameObject attack = enemyAttacks.transform.GetChild(attackCounter).gameObject;
+            attackCounter = attackCounter + 1 > enemyAttacks.transform.childCount ? 0 : attackCounter + 1;
+            attack.GetComponent<EnemyProjectileController>().Setup(projectileSpeed, attackDamage, -(transform.position - player.transform.position), projectileSprite);
+            attack.transform.position = transform.position;
+            attack.SetActive(true);
+        }
+        attackReady = false;
     }
 
-    private void TakeDamage(float dmg)
+    public void TakeDamage(float dmg)
     {
         health -= dmg;
         if (health == 0) Die();
@@ -87,14 +109,9 @@ public class EnemyController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.name==player.name)
+        if(collision.tag.Equals("Player"))
         {
             attacking = true;
-        }
-        else if (collision.tag.Equals("Projectile"))
-        {
-            TakeDamage(collision.gameObject.transform.GetComponent<ProjectileController>().damage);
-            collision.gameObject.SetActive(false);
         }
         else if (collision.tag.Equals("Despawner"))
         {
@@ -104,7 +121,7 @@ public class EnemyController : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.name == player.name)
+        if (collision.tag.Equals("Player"))
         {
             attacking = false;
         }

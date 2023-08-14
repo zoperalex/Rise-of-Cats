@@ -8,6 +8,7 @@ public class EnemyManager : MonoBehaviour
     [SerializeField]
     private Transform player;
     private int enemyPoolCounter;
+    private bool spawnedAll = false;
 
     private void Start()
     {
@@ -66,10 +67,28 @@ public class EnemyManager : MonoBehaviour
 
     private void Spawn(EnemyConfig ec, float minX, float maxX, float minY, float maxY)
     {
-        GameObject enemy = gameObject.transform.GetChild(enemyPoolCounter).gameObject;
+        GameObject enemy = null;
+        if (!spawnedAll)
+        {
+            enemy = gameObject.transform.GetChild(enemyPoolCounter).gameObject;
+            enemyPoolCounter++;
+            if (enemyPoolCounter >= gameObject.transform.childCount) spawnedAll = true;
+        }
+        else
+        {
+            for (int i = 0; i < gameObject.transform.childCount; i++)
+            {
+                Transform tempEnemy = gameObject.transform.GetChild(i);
+                if (!tempEnemy.gameObject.activeInHierarchy)
+                {
+                    enemy = tempEnemy.gameObject;
+                    break;
+                }
+            }
+            if (enemy == null) enemy = Instantiate(gameObject.transform.GetChild(0), transform.position, Quaternion.identity, gameObject.transform).gameObject;
+        }
         enemy.transform.position = new Vector3(UnityEngine.Random.Range(minX, maxX), UnityEngine.Random.Range(minY, maxY), 0);
-        enemyPoolCounter = enemyPoolCounter + 1 >= gameObject.transform.childCount ? 0 : enemyPoolCounter + 1;
-        enemy.GetComponent<EnemyController>().Setup(ec.health, ec.speed, ec.attackDamage, ec.attackSpeed, ec.attackType, ec.projectileSpeed, ec.projectileSprite, ec.sprite);
+        enemy.GetComponent<EnemyController>().Setup(ec.health, ec.speed, ec.attackDamage, ec.attackSpeed, ec.attackType, ec.projectileSpeed, ec.projectileSprite, ec.sprite, ec.attackRange);
         enemy.SetActive(true);
     }
 

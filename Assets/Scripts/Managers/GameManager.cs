@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public EnemyManager enemyManager;
 
     public List<EnemyConfig> BasicEnemies;
+    public List<EnemyConfig> BasicRangedEnemies;
 
     private void Awake()
     {

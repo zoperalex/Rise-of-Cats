@@ -13,4 +13,5 @@ public class EnemyConfig : ScriptableObject
     public float projectileSpeed;
     public Sprite projectileSprite;
     public Sprite sprite;
+    public float attackRange;
 }

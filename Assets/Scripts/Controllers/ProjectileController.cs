@@ -31,4 +31,13 @@ public class ProjectileController : MonoBehaviour
             gameObject.SetActive(false);
         }
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag.Equals("Enemy"))
+        {
+            gameObject.SetActive(false);
+            collision.gameObject.GetComponent<EnemyController>().TakeDamage(damage);
+        }
+    }
 }
