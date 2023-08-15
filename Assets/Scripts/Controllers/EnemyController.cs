@@ -7,6 +7,8 @@ public class EnemyController : MonoBehaviour
 {
     [SerializeField]
     private PlayerController player;
+    [SerializeField]
+    private EnemyProjectileManager epManager;
 
     float health;
     float speed;
@@ -16,7 +18,8 @@ public class EnemyController : MonoBehaviour
     float projectileSpeed;
     Sprite projectileSprite;
 
-    private bool attacking = false;
+    [HideInInspector]
+    public bool attacking = false;
     private bool attackReady = true;
     private float attackSpeedCD = 0;
 
@@ -24,8 +27,6 @@ public class EnemyController : MonoBehaviour
     private GameObject enemyAttacks;
     [SerializeField]
     private CircleCollider2D circleCollider;
-
-    int attackCounter;
 
     public void Setup(float health, 
                       float speed, 
@@ -43,16 +44,12 @@ public class EnemyController : MonoBehaviour
         this.attackSpeed = attackSpeed;
         if(sprite!=null) gameObject.GetComponent<SpriteRenderer>().sprite = sprite;
         this.attackType = attackType;
-        if (attackType.Equals(AttackType.MELEE))
+        if(!attackType.Equals(AttackType.MELEE))
         {
-            circleCollider.radius = 0.5f;
-        }
-        else
-        {
+            gameObject.transform.GetChild(0).gameObject.SetActive(true);
             this.projectileSpeed = projectileSpeed;
             this.projectileSprite = projectileSprite;
             circleCollider.radius = attackRange;
-            attackCounter = 0;
         }
     }
 
@@ -86,8 +83,8 @@ public class EnemyController : MonoBehaviour
         }
         else
         {
-            GameObject attack = enemyAttacks.transform.GetChild(attackCounter).gameObject;
-            attackCounter = attackCounter + 1 > enemyAttacks.transform.childCount ? 0 : attackCounter + 1;
+            GameObject attack = enemyAttacks.transform.GetChild(epManager.GetCounter()).gameObject;
+            epManager.IncrementCounter();
             attack.GetComponent<EnemyProjectileController>().Setup(projectileSpeed, attackDamage, -(transform.position - player.transform.position), projectileSprite);
             attack.transform.position = transform.position;
             attack.SetActive(true);
@@ -104,6 +101,7 @@ public class EnemyController : MonoBehaviour
     //Need to add way to get loot and xp.
     private void Die()
     {
+        gameObject.transform.GetChild(0).gameObject.SetActive(false);
         gameObject.SetActive(false);
     }
 

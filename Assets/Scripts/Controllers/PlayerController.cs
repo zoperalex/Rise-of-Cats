@@ -7,7 +7,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     float speed;
-    float health;
+    public float health;
     float maxHealth;
     float attackDamage;
     float attackSpeed;
@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour
     float projectileSpeed;
     Sprite projectileSprite;
 
+    public HealthBarController healthBarController;
     public GameObject enemies;
     public Camera mainCamera;
     public FloatingJoystick floatingJoystick;
@@ -39,13 +40,15 @@ public class PlayerController : MonoBehaviour
         this.attackType = GameManager.instance.playerConfig.attackType;
         this.projectileSpeed = GameManager.instance.playerConfig.projectileSpeed;
         this.projectileSprite = GameManager.instance.playerConfig.projectileSprite;
+
+        healthBarController.SetMaxHealth(this.maxHealth);
     }
 
     void Update()
     {
         if (attackReady)
         {
-            Attack();
+            //Attack();
         }
         if (!attackReady)
         {
@@ -96,14 +99,18 @@ public class PlayerController : MonoBehaviour
 
         attack.transform.position = transform.position;
         if (attackType == AttackType.NONE || attackType == AttackType.RANGED) attack.GetComponent<ProjectileController>().Setup(projectileSpeed, attackDamage, (target - transform.position).normalized, projectileSprite);
-        //else 
+        
+        //else MELEE ATTACK GOES HERE 
+        
         attack.SetActive(true);
         attackReady = false;
     }
 
     public void ChangeHealth(float amount)
     {
+        Debug.Log("health");
         health += amount;
+        healthBarController.SetHealth(health);
         if (health <= 0) Die();
     }
 
