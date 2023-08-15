@@ -24,6 +24,12 @@ public class PlayerController : MonoBehaviour
     private int attackCounter = 0;
     private bool attackReady;
 
+    [SerializeField]
+    private int level = 1;
+    private int currentExp = 0;
+    private int currentExpGoal;
+    private float expGoalIncrementPercentage = 0.25f;
+
     private void Start()
     {
         GameManager.instance.playerController = this;
@@ -40,6 +46,7 @@ public class PlayerController : MonoBehaviour
         this.attackType = GameManager.instance.playerConfig.attackType;
         this.projectileSpeed = GameManager.instance.playerConfig.projectileSpeed;
         this.projectileSprite = GameManager.instance.playerConfig.projectileSprite;
+        this.currentExpGoal = GameManager.instance.playerConfig.startingExpGoal;
 
         healthBarController.SetMaxHealth(this.maxHealth);
     }
@@ -108,7 +115,6 @@ public class PlayerController : MonoBehaviour
 
     public void ChangeHealth(float amount)
     {
-        Debug.Log("health");
         health += amount;
         healthBarController.SetHealth(health);
         if (health <= 0) Die();
@@ -117,5 +123,21 @@ public class PlayerController : MonoBehaviour
     private void Die()
     {
 
+    }
+
+    private void AddExp(int amount)
+    {
+        currentExp += amount;
+        if(currentExp >= currentExpGoal)
+        {
+            LevelUp();
+            currentExp = currentExp%currentExpGoal;
+        }
+    }
+
+    private void LevelUp()
+    {
+        level++;
+        //do whatever and get upgrades
     }
 }

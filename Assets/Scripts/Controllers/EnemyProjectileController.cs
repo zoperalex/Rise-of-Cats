@@ -27,7 +27,6 @@ public class EnemyProjectileController : MonoBehaviour
     {
         if (collision.tag.Equals("Player") && collision.isTrigger)
         {
-            Debug.Log("bullet");
             collision.gameObject.GetComponent<PlayerController>().ChangeHealth(-damage);
             gameObject.SetActive(false);
         }
