@@ -88,7 +88,7 @@ public class EnemyManager : MonoBehaviour
             if (enemy == null) enemy = Instantiate(gameObject.transform.GetChild(0), transform.position, Quaternion.identity, gameObject.transform).gameObject;
         }
         enemy.transform.position = new Vector3(UnityEngine.Random.Range(minX, maxX), UnityEngine.Random.Range(minY, maxY), 0);
-        enemy.GetComponent<EnemyController>().Setup(ec.health, ec.speed, ec.attackDamage, ec.attackSpeed, ec.attackType, ec.projectileSpeed, ec.projectileSprite, ec.sprite, ec.attackRange);
+        enemy.GetComponent<EnemyController>().Setup(ec.health, ec.speed, ec.attackDamage, ec.attackSpeed, ec.attackType, ec.expLoot, ec.projectileSpeed, ec.projectileSprite, ec.sprite, ec.attackRange);
         enemy.SetActive(true);
     }
 

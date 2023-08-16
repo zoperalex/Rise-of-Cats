@@ -9,6 +9,8 @@ public class EnemyController : MonoBehaviour
     private PlayerController player;
     [SerializeField]
     private EnemyProjectileManager epManager;
+    [SerializeField]
+    private ExperienceManager expManager;
 
     float health;
     float speed;
@@ -17,6 +19,7 @@ public class EnemyController : MonoBehaviour
     AttackType attackType;
     float projectileSpeed;
     Sprite projectileSprite;
+    ExpLootConfig expLoot;
 
     [HideInInspector]
     public bool attacking = false;
@@ -28,11 +31,12 @@ public class EnemyController : MonoBehaviour
     [SerializeField]
     private CircleCollider2D circleCollider;
 
-    public void Setup(float health, 
-                      float speed, 
-                      float attackDamage, 
-                      float attackSpeed, 
-                      AttackType attackType, 
+    public void Setup(float health,
+                      float speed,
+                      float attackDamage,
+                      float attackSpeed,
+                      AttackType attackType,
+                      ExpLootConfig expLoot,
                       float projectileSpeed = 0f, 
                       Sprite projectileSprite = null, 
                       Sprite sprite = null,
@@ -42,6 +46,7 @@ public class EnemyController : MonoBehaviour
         this.speed = speed;
         this.attackDamage = attackDamage;
         this.attackSpeed = attackSpeed;
+        this.expLoot = expLoot;
         if(sprite!=null) gameObject.GetComponent<SpriteRenderer>().sprite = sprite;
         this.attackType = attackType;
         if(!attackType.Equals(AttackType.MELEE))
@@ -102,6 +107,13 @@ public class EnemyController : MonoBehaviour
     private void Die()
     {
         gameObject.transform.GetChild(0).gameObject.SetActive(false);
+
+        GameObject exp = expManager.gameObject.transform.GetChild(expManager.GetExpCounter()).gameObject;
+        expManager.IncrementExpCount();
+        exp.GetComponent<ExperienceController>().Setup(expLoot.expAmount, expLoot.sprite);
+        exp.transform.position = transform.position;
+        exp.SetActive(true);
+
         gameObject.SetActive(false);
     }
 

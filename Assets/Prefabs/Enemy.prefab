@@ -10,13 +10,14 @@ GameObject:
   m_Component:
   - component: {fileID: 5773913120304732219}
   - component: {fileID: 3970549722463739349}
+  - component: {fileID: 482421753}
   m_Layer: 0
   m_Name: Range
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5773913120304732219
 Transform:
   m_ObjectHideFlags: 0
@@ -42,12 +43,25 @@ CircleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
+--- !u!114 &482421753
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5343783479553687906}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3631d2392bfc22c4aa36b3ddbef2dbbe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemy: {fileID: 7096852414521661070}
 --- !u!1 &7096852414521661107
 GameObject:
   m_ObjectHideFlags: 0
@@ -61,13 +75,14 @@ GameObject:
   - component: {fileID: 7096852414521661070}
   - component: {fileID: 7096852414521661071}
   - component: {fileID: 7096852414521661064}
+  - component: {fileID: 482421758}
   m_Layer: 0
   m_Name: Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7096852414521661069
 Transform:
   m_ObjectHideFlags: 0
@@ -149,8 +164,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
+  epManager: {fileID: 0}
+  attacking: 0
   enemyAttacks: {fileID: 0}
-  circleCollider: {fileID: 0}
+  circleCollider: {fileID: 3970549722463739349}
 --- !u!58 &7096852414521661071
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -188,3 +205,19 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!58 &482421758
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7096852414521661107}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.49999997

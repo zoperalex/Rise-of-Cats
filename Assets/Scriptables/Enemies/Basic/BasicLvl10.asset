@@ -20,3 +20,5 @@ MonoBehaviour:
   projectileSpeed: 0
   projectileSprite: {fileID: 0}
   sprite: {fileID: 0}
+  attackRange: 0
+  expLoot: {fileID: 11400000, guid: 8127b244a122c324e9b43e8eb195d565, type: 2}

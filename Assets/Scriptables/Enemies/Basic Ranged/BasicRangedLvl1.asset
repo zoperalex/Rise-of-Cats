@@ -21,3 +21,4 @@ MonoBehaviour:
   projectileSprite: {fileID: 0}
   sprite: {fileID: 0}
   attackRange: 5
+  expLoot: {fileID: 11400000, guid: f113b0c7ab352b441b8fe629842e5d5b, type: 2}

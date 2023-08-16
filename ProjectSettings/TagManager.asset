@@ -9,6 +9,7 @@ TagManager:
   - EnemyProjectile
   - Despawner
   - Enemy
+  - Experience
   layers:
   - Default
   - TransparentFX

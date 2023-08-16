@@ -26,6 +26,7 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField]
     private int level = 1;
+    [SerializeField]
     private int currentExp = 0;
     private int currentExpGoal;
     private float expGoalIncrementPercentage = 0.25f;
@@ -55,7 +56,7 @@ public class PlayerController : MonoBehaviour
     {
         if (attackReady)
         {
-            //Attack();
+            Attack();
         }
         if (!attackReady)
         {
@@ -125,13 +126,16 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    private void AddExp(int amount)
+    public void AddExp(int amount)
     {
         currentExp += amount;
         if(currentExp >= currentExpGoal)
         {
             LevelUp();
-            currentExp = currentExp%currentExpGoal;
+            int tempExpGoal = currentExpGoal;
+            currentExpGoal += (int)((float)currentExpGoal * expGoalIncrementPercentage);
+            currentExp = 0;
+            AddExp(currentExp % tempExpGoal);
         }
     }
 

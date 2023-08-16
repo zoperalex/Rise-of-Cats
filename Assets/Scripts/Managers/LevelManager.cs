@@ -13,10 +13,9 @@ public class LevelManager : MonoBehaviour
     IEnumerator LevelOne()
     {
         yield return new WaitForSeconds(3);
-        GameManager.instance.enemyManager.SpawnWave(1, GameManager.instance.BasicRangedEnemies[0]);
-        /*
+        GameManager.instance.enemyManager.SpawnWave(10, GameManager.instance.BasicEnemies[0]);
         yield return new WaitForSeconds(5);
-        GameManager.instance.enemyManager.SpawnWave(10, GameManager.instance.BasicRangedEnemies[0]);
+        GameManager.instance.enemyManager.SpawnWave(5, GameManager.instance.BasicRangedEnemies[0]);
         yield return new WaitForSeconds(5);
         GameManager.instance.enemyManager.SpawnWave(10, GameManager.instance.BasicEnemies[0]);
         yield return new WaitForSeconds(5);
@@ -33,6 +32,5 @@ public class LevelManager : MonoBehaviour
         yield return new WaitForSeconds(60);
         GameManager.instance.enemyManager.SpawnWave(20, GameManager.instance.BasicEnemies[1]);
         GameManager.instance.enemyManager.SpawnWave(5, GameManager.instance.BasicRangedEnemies[1]);
-        */
     }
 }
