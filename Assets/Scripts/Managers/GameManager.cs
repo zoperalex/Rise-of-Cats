@@ -12,6 +12,9 @@ public class GameManager : MonoBehaviour
     public List<EnemyConfig> BasicEnemies;
     public List<EnemyConfig> BasicRangedEnemies;
 
+    public GameObject projectileAttackPrefab;
+    public GameObject meleeAttackPrefab;
+
     private void Awake()
     {
         if(instance != null)

@@ -12,7 +12,7 @@ public class EnemyController : MonoBehaviour
     [SerializeField]
     private ExperienceManager expManager;
 
-    float health;
+    public float health;
     float speed;
     float attackDamage;
     float attackSpeed;
@@ -100,10 +100,9 @@ public class EnemyController : MonoBehaviour
     public void TakeDamage(float dmg)
     {
         health -= dmg;
-        if (health == 0) Die();
+        if (health <= 0) Die();
     }
 
-    //Need to add way to get loot and xp.
     private void Die()
     {
         gameObject.transform.GetChild(0).gameObject.SetActive(false);

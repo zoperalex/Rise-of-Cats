@@ -15,8 +15,8 @@ MonoBehaviour:
   startingExpGoal: 100
   health: 20
   speed: 3
-  attackDamage: 5
+  attackDamage: 20
   attackSpeed: 1
-  attackType: 0
+  attackType: 2
   projectileSpeed: 10
   projectileSprite: {fileID: 0}

@@ -6,38 +6,40 @@ using UnityEngine;
 public class ProjectileController : MonoBehaviour
 {
     float speed;
-    Vector3 targetDirection;
-
-    public float damage;
+    Vector3 targetDir;
+    private float damage;
     public SpriteRenderer spriteRenderer;
 
-    public void Setup(float speed, float damage, Vector3 targetDirection, Sprite sprite)
+    public void Setup(float speed, float damage, Vector3 targetDir, Sprite sprite)
     {
         this.speed= speed;
         this.damage= damage;
-        this.targetDirection= targetDirection;
+        this.targetDir= targetDir;
         if(sprite!=null) spriteRenderer.sprite = sprite;
     }
 
     void Update()
     {
-        transform.position += targetDirection * speed * Time.deltaTime;
+        transform.position += targetDir * speed * Time.deltaTime;
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    private void OnEnable()
     {
-        if (collision.tag.Equals("ProjectileDespawn"))
-        {
-            gameObject.SetActive(false);
-        }
+        StartCoroutine(StartTimer());
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag.Equals("Enemy"))
         {
-            gameObject.SetActive(false);
             collision.gameObject.GetComponent<EnemyController>().TakeDamage(damage);
+            gameObject.SetActive(false);
         }
+    }
+
+    IEnumerator StartTimer()
+    {
+        yield return new WaitForSeconds(2f);
+        gameObject.SetActive(false);
     }
 }
