@@ -8,7 +8,7 @@ public class PlayerConfig : ScriptableObject
     public int startingExpGoal;
     public float health;
     public float speed;
-    public float attackDamage;
+    public int attackDamage;
     public float attackSpeed;
     public AttackType attackType;
     public float projectileSpeed;

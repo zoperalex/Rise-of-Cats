@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public PlayerConfig playerConfig;
     [HideInInspector] public PlayerController playerController;
     [HideInInspector] public EnemyManager enemyManager;
+    [HideInInspector] public UpgradesManager upgradesManager;
 
     public List<EnemyConfig> BasicEnemies;
     public List<EnemyConfig> BasicRangedEnemies;
@@ -26,5 +27,10 @@ public class GameManager : MonoBehaviour
             instance = this;
             DontDestroyOnLoad(gameObject);
         }
+    }
+
+    public void ActivateUpgradesMenu()
+    {
+        upgradesManager.ActivateUpgradesMenu();
     }
 }

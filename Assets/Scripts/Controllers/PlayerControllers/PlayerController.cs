@@ -8,16 +8,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    float speed;
-    public float health;
-    float maxHealth;
-    float attackDamage;
-    float attackSpeed;
-    float attackSpeedCD;
-    AttackType attackType;
-    float projectileSpeed;
-    Sprite projectileSprite;
-
+    //Variables that need to be added from editor
     public HealthBarController healthBarController;
     public EXPBarController expBarController;
     public TextMeshProUGUI levelText;
@@ -26,18 +17,34 @@ public class PlayerController : MonoBehaviour
     public FloatingJoystick floatingJoystick;
     public GameObject attacks;
 
+    //player stat variables
+    float speed;
+    float health;
+    float maxHealth;
+    AttackType attackType;
+    float projectileSpeed;
+    Sprite projectileSprite;
+
+    //attack related variables
     private int attackCounter = 0;
     private bool attackReady;
+    private int attackDamage;
+    private float attackSpeed;
+    private float attackSpeedCD;
+    private Vector3 previousTarget;
 
-    [SerializeField]
-    private int level = 1;
-    [SerializeField]
-    private int currentExp = 0;
+    //Upgrade related variables;
+    float damageMultiplier;
+    float attackSpeedMultiplier;
+    float projectileSpeedMultiplier;
+    float speedMultiplier;
+
+    //Level related variables
+    private int level;
+    private int currentExp;
     private int currentExpGoal;
     private float expGoalIncrementPercentage = 0.25f;
     private bool invulnerable = false;
-
-    private Vector3 previousTarget;
 
     private void Start()
     {
@@ -56,12 +63,20 @@ public class PlayerController : MonoBehaviour
         this.projectileSpeed = GameManager.instance.playerConfig.projectileSpeed;
         this.projectileSprite = GameManager.instance.playerConfig.projectileSprite;
         this.currentExpGoal = GameManager.instance.playerConfig.startingExpGoal;
+        this.level = 1;
+        this.currentExp = 0;
 
         healthBarController.SetMaxHealth(this.maxHealth);
         expBarController.SetMaxEXP(this.currentExpGoal);
         levelText.text = level.ToString();
 
-        for(int i=0; i<20; i++)
+        //upgrade variables setup
+        damageMultiplier = 0;
+        attackSpeedMultiplier = 0;
+        projectileSpeedMultiplier = 0;
+        speedMultiplier = 0;
+
+        for (int i=0; i<20; i++)
         {
             GameObject attack = null;
             if (this.attackType.Equals(AttackType.NONE) || this.attackType.Equals(AttackType.RANGED)) attack = Instantiate(GameManager.instance.projectileAttackPrefab, transform.position, Quaternion.identity, attacks.transform);
@@ -80,7 +95,7 @@ public class PlayerController : MonoBehaviour
         if (!attackReady)
         {
             attackSpeedCD += Time.deltaTime;
-            if (attackSpeedCD > 1 / attackSpeed)
+            if (attackSpeedCD > 1 / GetAttackSpeed())
             {
                 attackReady = true;
                 attackSpeedCD = 0;
@@ -90,7 +105,7 @@ public class PlayerController : MonoBehaviour
 
     public void FixedUpdate()
     {
-        Vector3 movement = new Vector3(floatingJoystick.Horizontal * Time.deltaTime * speed, floatingJoystick.Vertical * Time.deltaTime * speed, 0);
+        Vector3 movement = new Vector3(floatingJoystick.Horizontal * Time.deltaTime * GetMoveSpeed(), floatingJoystick.Vertical * Time.deltaTime * GetMoveSpeed(), 0);
         transform.position += movement;
         mainCamera.transform.position = new Vector3(transform.position.x, transform.position.y, mainCamera.transform.position.z);
         if(attackType.Equals(AttackType.MELEE) && !movement.Equals(new Vector3(0,0,0)))
@@ -134,7 +149,7 @@ public class PlayerController : MonoBehaviour
 
             attack.transform.up = direction;
 
-            attack.GetComponent<ProjectileController>().Setup(projectileSpeed, attackDamage, direction.normalized, projectileSprite);
+            attack.GetComponent<ProjectileController>().Setup(GetProjectileSpeed(), GetDamage(), direction.normalized, projectileSprite);
         }
         else if (attackType.Equals(AttackType.MELEE)) {
             Vector3 target = new Vector3(floatingJoystick.Horizontal, floatingJoystick.Vertical, 0);
@@ -153,7 +168,7 @@ public class PlayerController : MonoBehaviour
             previousTarget = target;
             attack.transform.up = target;
 
-            attack.GetComponent<MeleeAttackController>().Setup(projectileSpeed, target.normalized, attackDamage ,projectileSprite);
+            attack.GetComponent<MeleeAttackController>().Setup(GetProjectileSpeed(), target.normalized, GetDamage(), projectileSprite);
         }
 
         attack.SetActive(true);
@@ -163,8 +178,12 @@ public class PlayerController : MonoBehaviour
     public void ChangeHealth(float amount)
     {
         if (amount < 0 && invulnerable) return;
+
         health += amount;
+        if (health > maxHealth) health = maxHealth;
+
         healthBarController.SetHealth(health);
+
         if (health <= 0) Die();
     }
 
@@ -194,8 +213,56 @@ public class PlayerController : MonoBehaviour
         level++;
         levelText.text = level.ToString();
         invulnerable = true;
+        GameManager.instance.ActivateUpgradesMenu();
+        Time.timeScale = 0;
+        attackDamage = (int)Mathf.Floor(attackDamage * 1.1f);
+    }
+
+    private int GetDamage()
+    {
+        return attackDamage + (int)Mathf.Floor(attackDamage * damageMultiplier);
+    }
+    private float GetAttackSpeed()
+    {
+        return attackSpeed + (attackSpeed * attackSpeedMultiplier);
+    }
+    private float GetProjectileSpeed()
+    {
+        return projectileSpeed + (projectileSpeed * projectileSpeedMultiplier);
+    }
+    private float GetMoveSpeed()
+    {
+        return speed + (speed * speedMultiplier);
+    }
+
+    public void SetDamageMultiplier(float multiplier)
+    {
+        this.damageMultiplier = multiplier;
+    }
+    public void SetAttackSpeedMultiplier(float multiplier)
+    {
+        this.attackSpeedMultiplier = multiplier;
+    }
+    public void SetProjectileSpeedMultiplier(float multiplier)
+    {
+        this.projectileSpeedMultiplier = multiplier;
+    }
+    public void SetMoveSpeedMultiplier(float multiplier)
+    {
+        this.speedMultiplier = multiplier;
+    }
+    public void UpgradeHealth()
+    {
+        maxHealth *= 1.1f;
+        health *= 1.1f;
+        healthBarController.SetMaxHealth(maxHealth);
+        healthBarController.SetHealth(health);
+
+    }
+
+    public void StartInvulnerabilityTimer()
+    {
         StartCoroutine(InvulnerabilityTimer());
-        //do whatever and get upgrades
     }
 
     IEnumerator InvulnerabilityTimer()
