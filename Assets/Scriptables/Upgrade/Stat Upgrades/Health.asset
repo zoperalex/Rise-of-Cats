@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b6119048c4098b4797c560feab73baf, type: 3}
+  m_Name: Health
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: <upgradeName>k__BackingField
+      Entry: 1
+      Data: Health
+    - Name: <description>k__BackingField
+      Entry: 1
+      Data: Increases your maximum health.
+    - Name: <sprite>k__BackingField
+      Entry: 6
+      Data: 
+    - Name: <nextUpgrade>k__BackingField
+      Entry: 6
+      Data: 
+    - Name: <requiredUpgrade>k__BackingField
+      Entry: 6
+      Data: 
+    - Name: <upgradeType>k__BackingField
+      Entry: 3
+      Data: 1
+  <level>k__BackingField: 0

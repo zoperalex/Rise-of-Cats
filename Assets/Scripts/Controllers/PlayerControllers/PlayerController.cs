@@ -39,6 +39,10 @@ public class PlayerController : MonoBehaviour
     float projectileSpeedMultiplier;
     float speedMultiplier;
 
+    List<Upgrade> upgradeList;
+    public int statUpgrades;
+    public int weaponUpgrades;
+
     //Level related variables
     private int level;
     private int currentExp;
@@ -71,10 +75,13 @@ public class PlayerController : MonoBehaviour
         levelText.text = level.ToString();
 
         //upgrade variables setup
-        damageMultiplier = 0;
-        attackSpeedMultiplier = 0;
-        projectileSpeedMultiplier = 0;
-        speedMultiplier = 0;
+        damageMultiplier = 1;
+        attackSpeedMultiplier = 1;
+        projectileSpeedMultiplier = 1;
+        speedMultiplier = 1;
+        upgradeList = new List<Upgrade>();
+        statUpgrades = 0;
+        weaponUpgrades = 0;
 
         for (int i=0; i<20; i++)
         {
@@ -213,26 +220,26 @@ public class PlayerController : MonoBehaviour
         level++;
         levelText.text = level.ToString();
         invulnerable = true;
-        GameManager.instance.ActivateUpgradesMenu();
         Time.timeScale = 0;
+        GameManager.instance.ActivateUpgradesMenu();
         attackDamage = (int)Mathf.Floor(attackDamage * 1.1f);
     }
 
     private int GetDamage()
     {
-        return attackDamage + (int)Mathf.Floor(attackDamage * damageMultiplier);
+        return (int)Mathf.Floor(attackDamage * damageMultiplier);
     }
     private float GetAttackSpeed()
     {
-        return attackSpeed + (attackSpeed * attackSpeedMultiplier);
+        return attackSpeed * attackSpeedMultiplier;
     }
     private float GetProjectileSpeed()
     {
-        return projectileSpeed + (projectileSpeed * projectileSpeedMultiplier);
+        return projectileSpeed * projectileSpeedMultiplier;
     }
     private float GetMoveSpeed()
     {
-        return speed + (speed * speedMultiplier);
+        return speed * speedMultiplier;
     }
 
     public void SetDamageMultiplier(float multiplier)
@@ -258,6 +265,18 @@ public class PlayerController : MonoBehaviour
         healthBarController.SetMaxHealth(maxHealth);
         healthBarController.SetHealth(health);
 
+    }
+
+    public void IncreaseStatUpgrades(Upgrade upgrade)
+    {
+        upgradeList.Add(upgrade);
+        statUpgrades++;
+    }
+
+    public void IncreaseWeaponUpgrades(Upgrade upgrade)
+    {
+        upgradeList.Add(upgrade);
+        weaponUpgrades++;
     }
 
     public void StartInvulnerabilityTimer()
