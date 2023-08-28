@@ -10,15 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 28dcaf770f12a224492d73b52569ad49, type: 3}
-  m_Name: BasicRangedLvl10
+  m_Name: BasicLvl1
   m_EditorClassIdentifier: 
-  health: 5000
-  speed: 3
-  attackDamage: 2000
-  attackSpeed: 4
-  attackType: 1
-  projectileSpeed: 3.5
+  health: 5
+  speed: 1
+  attackDamage: 1
+  attackSpeed: 0.5
+  attackType: 2
+  projectileSpeed: 0
   projectileSprite: {fileID: 0}
   sprite: {fileID: 0}
-  attackRange: 8
-  expLoot: {fileID: 11400000, guid: 8127b244a122c324e9b43e8eb195d565, type: 2}
+  attackRange: 0
+  expDrop:
+    dropChance: 0.9
+    amountMin: 5
+    amountMax: 10

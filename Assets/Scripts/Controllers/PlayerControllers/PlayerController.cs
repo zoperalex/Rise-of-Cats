@@ -45,10 +45,12 @@ public class PlayerController : MonoBehaviour
 
     //Level related variables
     private int level;
-    private int currentExp;
-    private int currentExpGoal;
-    private float expGoalIncrementPercentage = 0.25f;
+    private float currentExp;
+    private float currentExpGoal;
+    private float expGoalIncrementPercentage = 0.15f;
     private bool invulnerable = false;
+    private float excessExp;
+    private bool excess;
 
     private void Start()
     {
@@ -58,6 +60,17 @@ public class PlayerController : MonoBehaviour
 
     private void Setup()
     {
+        float a = 100;
+        for(int i = 0; i < 15; i++)
+        {
+            float b = 100;
+            for (int j = 0; j < i; j++)
+            {
+                b *= 1.1f;
+            }
+            if(i != 0) a += b;
+            Debug.Log(a);
+        }
         this.maxHealth = GameManager.instance.playerConfig.health;
         this.health = GameManager.instance.playerConfig.health;
         this.speed = GameManager.instance.playerConfig.speed;
@@ -69,6 +82,7 @@ public class PlayerController : MonoBehaviour
         this.currentExpGoal = GameManager.instance.playerConfig.startingExpGoal;
         this.level = 1;
         this.currentExp = 0;
+        this.excessExp = 0;
 
         healthBarController.SetMaxHealth(this.maxHealth);
         expBarController.SetMaxEXP(this.currentExpGoal);
@@ -99,7 +113,7 @@ public class PlayerController : MonoBehaviour
         {
             Attack();
         }
-        if (!attackReady)
+        else
         {
             attackSpeedCD += Time.deltaTime;
             if (attackSpeedCD > 1 / GetAttackSpeed())
@@ -107,6 +121,11 @@ public class PlayerController : MonoBehaviour
                 attackReady = true;
                 attackSpeedCD = 0;
             }
+        }
+
+        if (excess && !GameManager.instance.pickingUpgrade)
+        {
+            AddExp(excessExp);
         }
     }
 
@@ -199,19 +218,20 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    public void AddExp(int amount)
+    public void AddExp(float amount)
     {
         currentExp += amount;
         expBarController.SetEXP(currentExp);
+        excessExp = 0;
+        excess = false;
         if (currentExp >= currentExpGoal)
         {
             LevelUp();
-            int tempExpGoal = currentExpGoal;
-            int tempExp = currentExp;
-            currentExpGoal += (int)((float)currentExpGoal * expGoalIncrementPercentage);
-            expBarController.SetMaxEXP(currentExpGoal);
+            excessExp = currentExp - currentExpGoal;
             currentExp = 0;
-            AddExp(tempExp % tempExpGoal);
+            currentExpGoal += currentExpGoal * expGoalIncrementPercentage;
+            expBarController.SetMaxEXP(currentExpGoal);
+            if (excessExp > 0) excess = true;
         }
     }
 

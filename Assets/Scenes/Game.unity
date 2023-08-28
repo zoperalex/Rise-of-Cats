@@ -16614,7 +16614,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 468441556}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0.01, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -30034,28 +30034,15 @@ MonoBehaviour:
   playerController: {fileID: 0}
   enemyManager: {fileID: 0}
   upgradesManager: {fileID: 0}
+  expManager: {fileID: 0}
   BasicEnemies:
   - {fileID: 11400000, guid: 7cd5c237ac2ca2c4daf91b562058128b, type: 2}
   - {fileID: 11400000, guid: e39adc207353b2c4f9bae448b138642b, type: 2}
   - {fileID: 11400000, guid: 61bb6ba8cb96c184eb93e39fd9ca15b3, type: 2}
-  - {fileID: 11400000, guid: 4d9ee26b2ab197b4f96f3bc2a26f0a10, type: 2}
-  - {fileID: 11400000, guid: 6bb8f9e8ac041fc47a9fc2dfa104be89, type: 2}
-  - {fileID: 11400000, guid: f8fe31996318e3845af61f2e18fae856, type: 2}
-  - {fileID: 11400000, guid: 31bb30ed74204db4e8dccc372be9c38e, type: 2}
-  - {fileID: 11400000, guid: 3ce2491d2b01b444a9d2c0d0555dac7a, type: 2}
-  - {fileID: 11400000, guid: 7d4c59b34ad60a14c9aa592e1090404b, type: 2}
-  - {fileID: 11400000, guid: 3e33f045613c0f544ba0822168df0c44, type: 2}
   BasicRangedEnemies:
   - {fileID: 11400000, guid: 59b9573461bf3b542a1580d587ffed7b, type: 2}
   - {fileID: 11400000, guid: e00afbc23b96f6f438483aaa80895353, type: 2}
   - {fileID: 11400000, guid: 1ff06330982a95d45860d3491306805d, type: 2}
-  - {fileID: 11400000, guid: 65f4de5c1fb7cf245a5d128cc83dd520, type: 2}
-  - {fileID: 11400000, guid: d684c81183eda6a43b542196e8ad3513, type: 2}
-  - {fileID: 11400000, guid: 220afe18d3df1df4a91c420b0a80fb37, type: 2}
-  - {fileID: 11400000, guid: 1cf4e3203b3b60343a93f28e6d38e69e, type: 2}
-  - {fileID: 11400000, guid: c95dd897669aa8547b86c741fbdb0ab5, type: 2}
-  - {fileID: 11400000, guid: 648b059b563e02446a123695940cc692, type: 2}
-  - {fileID: 11400000, guid: 1155c05d51024f44d97ba97747fa4720, type: 2}
   projectileAttackPrefab: {fileID: 2695950230065907186, guid: d3ff33955b6c8e94e9b724d9e8a65073, type: 3}
   meleeAttackPrefab: {fileID: 2424464421646739056, guid: d5bff29eda260a9419f9fab708e734ae, type: 3}
 --- !u!1001 &886817626
@@ -64878,6 +64865,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fa0af73c5906f24e81a94d5a05aecfc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  expSprites: []
 --- !u!1001 &1975130711
 PrefabInstance:
   m_ObjectHideFlags: 0

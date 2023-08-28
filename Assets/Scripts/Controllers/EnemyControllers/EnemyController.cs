@@ -9,8 +9,6 @@ public class EnemyController : MonoBehaviour
     private PlayerController player;
     [SerializeField]
     private EnemyProjectileManager epManager;
-    [SerializeField]
-    private ExperienceManager expManager;
 
     public float health;
     float speed;
@@ -19,7 +17,7 @@ public class EnemyController : MonoBehaviour
     AttackType attackType;
     float projectileSpeed;
     Sprite projectileSprite;
-    ExpLootConfig expLoot;
+    ExpDrop expDrop;
 
     [HideInInspector]
     public bool attacking = false;
@@ -36,7 +34,7 @@ public class EnemyController : MonoBehaviour
                       float attackDamage,
                       float attackSpeed,
                       AttackType attackType,
-                      ExpLootConfig expLoot,
+                      ExpDrop expDrop,
                       float projectileSpeed = 0f, 
                       Sprite projectileSprite = null, 
                       Sprite sprite = null,
@@ -46,7 +44,7 @@ public class EnemyController : MonoBehaviour
         this.speed = speed;
         this.attackDamage = attackDamage;
         this.attackSpeed = attackSpeed;
-        this.expLoot = expLoot;
+        this.expDrop = expDrop;
         if(sprite!=null) gameObject.GetComponent<SpriteRenderer>().sprite = sprite;
         this.attackType = attackType;
         if(!attackType.Equals(AttackType.MELEE))
@@ -106,10 +104,14 @@ public class EnemyController : MonoBehaviour
     private void Die()
     {
         gameObject.transform.GetChild(0).gameObject.SetActive(false);
-
-        GameObject exp = expManager.gameObject.transform.GetChild(expManager.GetExpCounter()).gameObject;
-        expManager.IncrementExpCount();
-        exp.GetComponent<ExperienceController>().Setup(expLoot.expAmount, expLoot.sprite);
+        if (Random.Range(0f, 1f) > expDrop.dropChance)
+        {
+            return;
+        }
+        GameObject exp = GameManager.instance.expManager.gameObject.transform.GetChild(GameManager.instance.expManager.GetExpCounter()).gameObject;
+        GameManager.instance.expManager.IncrementExpCount();
+        int expAmount = Random.Range(expDrop.amountMin, expDrop.amountMax);
+        exp.GetComponent<ExperienceController>().Setup(expAmount, GameManager.instance.expManager.GetSprite(expAmount));
         exp.transform.position = transform.position;
         exp.SetActive(true);
 

@@ -7,7 +7,6 @@ public class ProjectileSpeedUpgrade : Upgrade
 {
     public override void Choose()
     {
-        Debug.Log("Made it");
         LevelUp();
         GameManager.instance.playerController.SetProjectileSpeedMultiplier(level * 0.1f + 1);
         if (level == 1) GameManager.instance.playerController.IncreaseStatUpgrades(this);

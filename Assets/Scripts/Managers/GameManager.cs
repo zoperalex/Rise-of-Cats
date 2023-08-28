@@ -9,12 +9,14 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public PlayerController playerController;
     [HideInInspector] public EnemyManager enemyManager;
     [HideInInspector] public UpgradesManager upgradesManager;
+    [HideInInspector] public ExperienceManager expManager;
 
     public List<EnemyConfig> BasicEnemies;
     public List<EnemyConfig> BasicRangedEnemies;
 
     public GameObject projectileAttackPrefab;
     public GameObject meleeAttackPrefab;
+    public bool pickingUpgrade;
 
     private void Awake()
     {

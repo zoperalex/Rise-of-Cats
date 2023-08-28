@@ -11,13 +11,13 @@ public class UpgradesManager : MonoBehaviour
     public List<Upgrade> statUpgradeList;
     public List<Upgrade> weaponUpgradeList;
 
-    private List<Upgrade> availableStatUpgrades;
+    public List<Upgrade> availableStatUpgrades;
     private List<Upgrade> availableWeaponUpgrades;
 
-    private List<Upgrade> currentAvailableUpgrades;
+    public List<Upgrade> currentAvailableUpgrades;
 
     private List<Upgrade> currentWeaponUpgrades;
-    private List<Upgrade> currentStatUpgrades;
+    public List<Upgrade> currentStatUpgrades;
 
     private List<Upgrade> currentCards;
 
@@ -84,7 +84,7 @@ public class UpgradesManager : MonoBehaviour
             for (int i = 0; i < 2; i++)
             {
                 int upgrade = Random.Range(0, currentAvailableUpgrades.Count);
-                SetUpgradeCard(upgradesMenu.transform.GetChild(i == 1? 1 : 3).gameObject, currentAvailableUpgrades[upgrade]);
+                SetUpgradeCard(upgradesMenu.transform.GetChild(i == 1? 3 : 1).gameObject, currentAvailableUpgrades[upgrade]);
                 currentCards.Add(currentAvailableUpgrades[upgrade]);
                 currentAvailableUpgrades.Remove(currentAvailableUpgrades[upgrade]);
                 if (i == 0) currentCards.Add(null);
@@ -100,7 +100,7 @@ public class UpgradesManager : MonoBehaviour
         }
         currentAvailableUpgrades = new List<Upgrade>();
         upgradesMenu.SetActive(true);
-        return;
+        GameManager.instance.pickingUpgrade = true;
     }
 
     void SetUpgradeCard(GameObject card, Upgrade Upgrade)
@@ -118,12 +118,21 @@ public class UpgradesManager : MonoBehaviour
     public void OnClick(int card)
     {
         currentCards[card].Choose();
-        if (currentCards[card].upgradeType.Equals(UpgradeType.WEAPON) && currentWeaponUpgrades.Find(x => x == currentCards[card]) != null) currentWeaponUpgrades.Add(currentCards[card]);
-        else if(currentCards[card].upgradeType.Equals(UpgradeType.STAT) && currentStatUpgrades.Find(x => x == currentCards[card]) != null) currentStatUpgrades.Add(currentCards[card]);
+        if (currentCards[card].upgradeType.Equals(UpgradeType.WEAPON) && !currentWeaponUpgrades.Find(x => x == currentCards[card]))
+        {
+            currentWeaponUpgrades.Add(currentCards[card]);
+            availableWeaponUpgrades.Remove(currentCards[card]);
+        }
+        else if (currentCards[card].upgradeType.Equals(UpgradeType.STAT) && !currentStatUpgrades.Find(x => x == currentCards[card]))
+        {
+            currentStatUpgrades.Add(currentCards[card]);
+            availableStatUpgrades.Remove(currentCards[card]);
+        }
         currentCards = new List<Upgrade>();
         DeactivateUpgradeMenu();
         Time.timeScale = 1;
         GameManager.instance.playerController.StartInvulnerabilityTimer();
+        GameManager.instance.pickingUpgrade = false;
     }
 
     void DeactivateUpgradeMenu()
